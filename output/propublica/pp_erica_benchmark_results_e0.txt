@@ -1,0 +1,12 @@
+Namespace(correlates=4, epsilon=0.0)
+0.2263447828904731
+Namespace(correlates=8, epsilon=0.0)
+0.22942320155541154
+Namespace(correlates=12, epsilon=0.0)
+0.23201555411535968
+Namespace(correlates=16, epsilon=0.0)
+0.22974724562540505
+Namespace(correlates=20, epsilon=0.0)
+0.22893713545042127
+Namespace(correlates=24, epsilon=0.0)
+0.23136746597537264

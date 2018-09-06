@@ -1,0 +1,32 @@
+False Positives:
+             f0  protected
+count  2.000000   2.000000
+mean   0.122600  -0.368850
+std    0.173383   0.179817
+min    0.000000  -0.496000
+25%    0.061300  -0.432425
+50%    0.122600  -0.368850
+75%    0.183900  -0.305275
+max    0.245200  -0.241700
+
+Equal weight:
+              f0  protected
+count  98.000000  98.000000
+mean   -0.002541  -0.002541
+std     0.025153   0.025153
+min    -0.249000  -0.249000
+25%     0.000000   0.000000
+50%     0.000000   0.000000
+75%     0.000000   0.000000
+max     0.000000   0.000000
+
+f0 has more weight:
+        f0  protected
+count  0.0        0.0
+mean   NaN        NaN
+std    NaN        NaN
+min    NaN        NaN
+25%    NaN        NaN
+50%    NaN        NaN
+75%    NaN        NaN
+max    NaN        NaN

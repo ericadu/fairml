@@ -1,0 +1,11 @@
+Generating random rows...
+Satisfies statistical parity, epsilon = 0.004688453393632663
+LogisticRegression(C=0.01, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=None, solver='liblinear', tol=0.0001,
+          verbose=0, warm_start=False)
+Relative Rankings:
+Feature: protected,	 Importance: 0.4985
+Feature: f0,	 Importance: 0.5089
+
+

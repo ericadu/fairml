@@ -1,0 +1,48 @@
+Namespace(correlates=4, epsilon=0.02)
+0.2260524225575854
+Namespace(correlates=8, epsilon=0.02)
+0.2290706910246227
+Namespace(correlates=12, epsilon=0.02)
+-0.23335980937251788
+Namespace(correlates=16, epsilon=0.02)
+0.22827640984908656
+Namespace(correlates=20, epsilon=0.02)
+0.22922954725972994
+Namespace(correlates=24, epsilon=0.02)
+-0.23065925337569498
+Namespace(correlates=4, epsilon=0.04)
+0.2214085384855095
+Namespace(correlates=8, epsilon=0.04)
+0.22405733873480835
+Namespace(correlates=12, epsilon=0.04)
+0.22405733873480835
+Namespace(correlates=16, epsilon=0.04)
+-0.225148021190402
+Namespace(correlates=20, epsilon=0.04)
+-0.22655032720473667
+Namespace(correlates=24, epsilon=0.04)
+-0.2245247740729199
+Namespace(correlates=4, epsilon=0.06)
+0.21843472944053807
+Namespace(correlates=8, epsilon=0.06)
+0.21981045551819015
+Namespace(correlates=12, epsilon=0.06)
+-0.2182818709874656
+Namespace(correlates=16, epsilon=0.06)
+-0.22195047386120453
+Namespace(correlates=20, epsilon=0.06)
+-0.22072760623662488
+Namespace(correlates=24, epsilon=0.06)
+-0.21874044634668297
+Namespace(correlates=4, epsilon=0.08)
+0.21125281320330083
+Namespace(correlates=8, epsilon=0.08)
+-0.21410352588147036
+Namespace(correlates=12, epsilon=0.08)
+-0.21635408852213053
+Namespace(correlates=16, epsilon=0.08)
+-0.21440360090022506
+Namespace(correlates=20, epsilon=0.08)
+-0.21710427606901725
+Namespace(correlates=24, epsilon=0.08)
+-0.21650412603150787

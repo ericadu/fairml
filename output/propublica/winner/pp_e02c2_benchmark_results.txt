@@ -1,0 +1,2 @@
+Namespace(correlates=4, epsilon=0.02)
+-0.21305326331582897

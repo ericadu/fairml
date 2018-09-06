@@ -18,8 +18,9 @@ plt.style.use('ggplot')
 plt.figure(figsize=(6, 6))
 
 # read in propublica data
-propublica_data = pd.read_csv("./doc/example_notebooks/"
-                              "propublica_data_for_fairml.csv")
+propublica_data = pd.read_csv("./data/propublica_data_for_fairml.csv")
+propublica_data['White'] = np.where(propublica_data["African_American"] == 1, 0, 1)
+propublica_data = propublica_data.drop("African_American", 1)
 
 # quick data processing
 compas_rating = propublica_data.score_factor.values

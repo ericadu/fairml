@@ -1,0 +1,3 @@
+Generating rows biased on an unprotected attribute...
+Using probability 0.9 and 0.9
+Satisfies statistical parity, epsilon = 0.00022332449158102285
