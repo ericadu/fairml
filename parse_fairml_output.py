@@ -14,7 +14,9 @@ if __name__ == '__main__':
 
   input_filename = "{}/{}_{}_output.csv".format(directory, file_prefix, row_type)
 
+  print(file_prefix)
   variables = file_prefix.split("-")
+  print(variables)
 
   df = pd.read_csv(input_filename)
   output_filename = "{}/{}_audit_result.csv".format(directory, row_type)
@@ -35,9 +37,9 @@ if __name__ == '__main__':
 #     f.write('Num. FP: ' + str(df[df['max'] == 'protected'].count()['protected']))
   variables.extend([
     str(round(df['accuracy'].mean(), 3)),
-    str(df[abs(df['f0']) < abs(df['protected'])].count()['protected']/100.0)
+    str(df[df['max'] == 'protected'].count()['protected'])
   ])
-  #variables.append(str(df[df['max'] == 'protected'].count()['protected']))
+  # str(df[abs(df['f0']) < abs(df['protected'])].count()['protected']/100.0)
 
   write_header = False
   if not os.path.exists(output_filename):
@@ -47,12 +49,13 @@ if __name__ == '__main__':
   if write_header:
     if row_type == 'corr':
       output_file.write('corr,accuracy,FP\n')
-    if row_type == 'random':
-      output_file.write('p,corr,corr_conf,protected,protected_conf,accuracy,FP\n')
-    elif len(variables) > 4:
-      output_file.write(','.join(["p0", "p1", "c", "accuracy", "FP"])+ '\n')
-    elif len(variables) > 3:
-      output_file.write(','.join(["p0", "p1", "accuracy", "FP"])+ '\n')
+    # if row_type == 'random':
+    #   output_file.write('p,corr,corr_conf,protected,protected_conf,accuracy,FP\n')
+    # elif len(variables) > 4:
+    #   output_file.write(','.join(["p0", "p1", "c", "accuracy", "FP"])+ '\n')
+    # elif len(variables) > 3:
+    #   output_file.write(','.join(["p0", "p1", "accuracy", "FP"])+ '\n')
     else:
-      output_file.write(','.join(["p", "accuracy", "FP"])+ '\n')
+      output_file.write(','.join(["p", "c", "accuracy", "FP"])+ '\n')
+  print(variables)
   output_file.write(','.join(variables) + '\n')

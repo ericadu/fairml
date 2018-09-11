@@ -73,21 +73,21 @@ def get_corr_row():
   return row
 
 
-def check_statistical_parity(data):
-  group_by_protected = data.groupby(['protected', 'outcome']).size()
-  total_absent = data.protected.value_counts()[0]
-  total_present = data.protected.value_counts()[1]
+# def check_statistical_parity(data):
+#   group_by_protected = data.groupby(['protected', 'outcome']).size()
+#   total_absent = data.protected.value_counts()[0]
+#   total_present = data.protected.value_counts()[1]
 
-  p_positive_absent = float(group_by_protected[0][1]) / total_absent
-  p_positive_present = float(group_by_protected[1][1]) / total_present
-  eps = abs(p_positive_absent - p_positive_present)
+#   p_positive_absent = float(group_by_protected[0][1]) / total_absent
+#   p_positive_present = float(group_by_protected[1][1]) / total_present
+#   eps = abs(p_positive_absent - p_positive_present)
 
-  if eps < epsilon:
-    #print("Satisfies statistical parity, epsilon = {}".format(str(eps)))
-    return True
-  else:
-    #print("Generating a different dataset, epsilon = {}.".format(str(eps)))
-    return False
+#   if eps < epsilon:
+#     #print("Satisfies statistical parity, epsilon = {}".format(str(eps)))
+#     return True
+#   else:
+#     #print("Generating a different dataset, epsilon = {}.".format(str(eps)))
+#     return False
 
 def get_row():
   if row_type == 'random':
@@ -155,17 +155,17 @@ if __name__ == '__main__':
   test_data = np.zeros((num_samples, num_columns + 2)) 
   column_names = get_cols()
 
-  satisfies = False
-  while not satisfies:
-    for i in range(num_samples):
-      input_data[i,:] = get_row()
-      test_data[i,:] = get_row()
-    
-    # Input dataframe
-    input_df = pd.DataFrame(data=input_data, index=range(0,num_samples),columns=column_names)
-    test_df = pd.DataFrame(data=test_data, index=range(0,num_samples),columns=column_names)
+  # satisfies = False
+  # while not satisfies:
+  for i in range(num_samples):
+    input_data[i,:] = get_row()
+    test_data[i,:] = get_row()
+  
+  # Input dataframe
+  input_df = pd.DataFrame(data=input_data, index=range(0,num_samples),columns=column_names)
+  test_df = pd.DataFrame(data=test_data, index=range(0,num_samples),columns=column_names)
 
-    satisfies = check_statistical_parity(input_df)
+    # satisfies = check_statistical_parity(input_df)
     #satisfies = True
     # pearsons = stats.pearsonr(input_df.f0.values, input_df.outcome.values)
     # pearsons_protected = stats.pearsonr(input_df.protected.values, input_df.outcome.values)
@@ -198,7 +198,7 @@ if __name__ == '__main__':
   importancies, _ = audit_model(clf.predict, input_df)
 
   if num_columns > 1:
-    output_filename = "{}/{}-{}_{}_output.csv".format(directory, prob0, num_columns, row_type)
+    output_filename = "{}/{}-{}_{}_output.csv".format(directory, prob, num_columns, row_type)
   elif prob0 and prob1:
     output_filename = "{}/{}-{}_{}_output.csv".format(directory, prob0, prob1, row_type)
   else:

@@ -2,15 +2,15 @@
 
 N=$1
 DIRPATH=$2
-P1=$3
+ROWTYPE=$3
 
-for P in 0.1 0.2 0.3; do
-  COUNTER=0
-  while [ $COUNTER -lt $N ]; do
-    python3 false_negatives_generator.py -d $DIRPATH -p $P --prob0 1.0 --prob1 $P1
-    let COUNTER=COUNTER+1 
-  done
-done
+# for P in 0.1 0.2 0.3; do
+#   COUNTER=0
+#   while [ $COUNTER -lt $N ]; do
+#     python3 false_negatives_generator.py -d $DIRPATH -p $P --prob0 1.0 --prob1 $P1
+#     let COUNTER=COUNTER+1 
+#   done
+# done
 
 # for P0 in 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9; do
 #   for C in 3 5 7 10 15; do
@@ -31,18 +31,16 @@ done
 # done
 
 
-# for P in 0.5; do
-#   for c in 2 3 4; do
-#     mkdir $DIRPATH/$P-$c
-#     COUNTER=0
-#     while [ $COUNTER -lt $N ]; do
-#       python3 statistical_parity_generator.py -r $ROWTYPE -d $DIRPATH/$P-$c -p $P -c $c
-#       python3 audit.py -r $ROWTYPE -d $DIRPATH/$P-$c -c $c
-#       let COUNTER=COUNTER+1 
-#     done
-#     python3 parse_fairml_complex_output.py -r $ROWTYPE -d $DIRPATH/$P-$c
-#   done
-# done
+for P in 0.5; do
+  for C in 2 3; do
+    COUNTER=0
+    while [ $COUNTER -lt $N ]; do
+      python3 statistical_parity_generator.py -r $ROWTYPE -d $DIRPATH -p $P -c $C
+      let COUNTER=COUNTER+1 
+    done
+    python3 parse_fairml_output.py -r $ROWTYPE -d $DIRPATH -f $P-$C
+  done
+done
 # for P0 in 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9; do
 #   for C in 0.5; do
 #     COUNTER=0
