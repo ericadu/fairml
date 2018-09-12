@@ -1,0 +1,5 @@
+env,experiments,desc,trials,threads,time
+local,14,1a1b,100,1,0m41.095s
+local,14,1a1b,100,4,0m32.512s
+local,14,1a1b,100,10,0m29.839s
+local,17,1a1b2,100,14,0m11.437s
