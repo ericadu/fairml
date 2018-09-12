@@ -1,8 +1,0 @@
-Namespace(correlates=0, epsilon=0.02)
-0.23034154090548054
-Namespace(correlates=0, epsilon=0.04)
-0.2259270800872546
-Namespace(correlates=0, epsilon=0.06)
-0.22195047386120453
-Namespace(correlates=0, epsilon=0.08)
-0.218304576144036

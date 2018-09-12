@@ -1,4 +1,0 @@
--0.21812901253439315
-
-
-// return np.random.normal(race, .3, (num_correlates,)).tolist()
