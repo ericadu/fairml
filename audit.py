@@ -18,7 +18,7 @@ from fairml import plot_dependencies
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--directory', '-d', type=str, default='data/generator/statistical_parity', help='output directory')
-parser.add_argument('--experiment', '-t', type=str, help='experiment name')
+parser.add_argument('--title', '-t', type=str, help='experiment title')
 parser.add_argument('--columns', '-m', type=int, default=1, help='number of extra columns. needs to be greater than or equal to 1')
 parser.add_argument('--samples', '-n', type=int, default=10000, help='number of samples')
 parser.add_argument('--biased', '-b', help='biased or unbiased', action="store_true")
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
   df = pd.DataFrame(data=dataset, columns=columns)
   output = df.O.values
-  df = input_data.drop("O", 1)
+  df = df.drop("O", 1)
 
   #  quick setup of Logistic regression
   #  perhaps use a more crazy classifier
@@ -68,9 +68,10 @@ if __name__ == '__main__':
     write_header = True
 
   output_file = open(output_filename, "a")
+
+  columns.pop()
   if write_header:
     output_file.write(','.join(columns) + '\n')
 
-  columns.pop()
   output_file.write(','.join([str(get_repr(i)) for i in columns]) + '\n')
 
