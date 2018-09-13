@@ -10,6 +10,7 @@ from fairml import plot_dependencies
 from multiprocessing import Pool
 from sklearn.linear_model import LogisticRegression
 
+# Pre-req: must create directory with subdirectories output and results
 parser = argparse.ArgumentParser()
 parser.add_argument('--directory', '-d', type=str, default='data/generator/statistical_parity', help='output directory')
 parser.add_argument('--settings', '-s', type=str, default='settings.csv', help='file path for experiment settings')
@@ -30,7 +31,7 @@ def run(settings):
   p_a = float(settings['proba'])
   p = float(settings['prob'])
 
-  output_filename = "{}/{}_output.csv".format(directory, exp)
+  output_filename = "{}/output/{}_output.csv".format(directory, exp)
 
   # Keep record of data
   with open(output_filename, 'w') as f:
@@ -59,7 +60,7 @@ def run(settings):
   # Log in overall experiment
   exp_name, exp_trial = exp.split("-")
   results = pd.read_csv(output_filename)
-  results_filename = "{}/{}_results.csv".format(directory, exp_name)
+  results_filename = "{}/results/{}_results.csv".format(directory, exp_name)
 
   results = results.abs()
   results['max'] = results.idxmax(axis=1)
