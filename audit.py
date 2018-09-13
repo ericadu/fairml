@@ -21,7 +21,7 @@ def get_repr(value):
 
 def run(settings):
   # Extract Settings
-  experiment = settings['title']
+  exp = settings['title']
   m = int(settings['columns'])
   n = int(settings['samples'])
   biased = False if settings['biased'] == 'False' else True
@@ -30,7 +30,7 @@ def run(settings):
   p_a = float(settings['proba'])
   p = float(settings['prob'])
 
-  output_filename = "{}/{}_output.csv".format(directory, experiment)
+  output_filename = "{}/{}_output.csv".format(directory, exp)
 
   # Keep record of data
   with open(output_filename, 'w') as f:
@@ -39,7 +39,7 @@ def run(settings):
 
     for _ in range(num_trials):
       # Generate Dataset
-      dataset = spg.generate_dataset(m, n, biased, eps, p_y_A, p_a, p)
+      dataset = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
       columns = ['X{}'.format(str(i)) for i in range(m)] + ['A', 'O']
       # quick data processing
 
@@ -57,7 +57,7 @@ def run(settings):
       f.write(','.join([str(get_repr(importancies[i])) for i in column_names]) + '\n')
 
   # Log in overall experiment
-  exp_name, exp_trial = experiment.split("-")
+  exp_name, exp_trial = exp.split("-")
   results = pd.read_csv(output_filename)
   results_filename = "{}/{}_results.csv".format(directory, exp_name)
 
