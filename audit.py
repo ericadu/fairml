@@ -39,13 +39,13 @@ def run(settings):
   # Keep record of data
   with open(output_filename, 'w') as f:
     column_names = ['X{}'.format(str(i)) for i in range(m)] + ['A']
-    f.write(','.join(column_names) + '\n')
+    f.write(','.join(column_names + ['checked']) + '\n')
 
     for _ in range(num_trials):
       # Generate Dataset
       df = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
       validated = spg.validate_dataset(df)
-      check_settings([m, n, eps, p_y_A, p_a, p, biased], validated)
+      checked = check_settings([m, n, eps, p_y_A, p_a, p, biased], validated)
       vf.write(','.join([str(round(i, 4)) for i in validated]) + '\n')
 
       output = df.O.values
@@ -58,13 +58,16 @@ def run(settings):
       #  call audit model
       importancies, _ = audit_model(clf.predict, df)
 
-      f.write(','.join([str(get_repr(importancies[i])) for i in column_names]) + '\n')
+      f.write(','.join([str(get_repr(importancies[i])) for i in column_names] + [str(checked)]) + '\n')
 
   results = pd.read_csv(output_filename)
   exp_name, exp_trial = exp.split("-")
   results_filename = "{}/results/{}_results.csv".format(directory, exp_name)
 
   # Log in overall experiment
+  checked_true = results.checked.value_counts()[True]
+  print("{},{}".format(exp, str(checked_true)))
+  results = results.drop("checked", 1)
   results = results.abs()
   results['max'] = results.idxmax(axis=1)
 
@@ -93,18 +96,12 @@ def check_settings(expected, actual):
   actual_values = [round(i, 1) for i in list(actual[:5]) + [p]]
 
   if expected_values != actual_values:
-    print("Expected values: {}".format(expected_values))
-    print("Actual values: {}".format(actual_values))
+    return False
 
-  if biased:
-    if round(x_corr, 1) == 0:
-      print("Correlation equal to 0 in biased case for {}.".format(expected_values))
+  if (biased and round(x_corr, 1) == 0) or (not biased and round(x_corr, 1) != 0):
+      return False
 
-  if not biased:
-    if round(x_corr, 1) != 0:
-      print("Correlation not equal to 0 in unbiased case for {}.".format(expected_values))
-
-  #m, n, eps, p_y_A, p_a, p_biased, p_unbiased, x_corr, a_corr
+  return True
 
 if __name__ == '__main__':
   args = parser.parse_args()
