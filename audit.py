@@ -32,6 +32,9 @@ def run(settings):
   p = float(settings['prob'])
 
   output_filename = "{}/output/{}_output.csv".format(directory, exp)
+  validation_filename = "{}/validation/{}.csv".format(directory, exp)
+  vf = open(validation_filename, "a")
+  vf.write('eps,p_y_A,p_a,p_biased,p_unbiased\n')
 
   # Keep record of data
   with open(output_filename, 'w') as f:
@@ -40,11 +43,10 @@ def run(settings):
 
     for _ in range(num_trials):
       # Generate Dataset
-      dataset = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
-      columns = ['X{}'.format(str(i)) for i in range(m)] + ['A', 'O']
-      # quick data processing
+      df = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
+      validated = spg.validate_dataset(df)
+      vf.write(','.join([str(round(i, 4)) for i in validated]) + '\n')
 
-      df = pd.DataFrame(data=dataset, columns=columns)
       output = df.O.values
       df = df.drop("O", 1)
 
