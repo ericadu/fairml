@@ -63,9 +63,7 @@ def run(settings):
   results = pd.read_csv(output_filename)
   exp_name, exp_trial = exp.split("-")
   results_filename = "{}/results/{}_results.csv".format(directory, exp_name)
-  log_results(results, results_filename, settings)
 
-def log_results(results, results_filename, settings):
   # Log in overall experiment
   results = results.abs()
   results['max'] = results.idxmax(axis=1)
