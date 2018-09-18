@@ -34,7 +34,7 @@ def run(settings):
   output_filename = "{}/output/{}_output.csv".format(directory, exp)
   validation_filename = "{}/validation/{}.csv".format(directory, exp)
   vf = open(validation_filename, "a")
-  vf.write('eps,p_y_A,p_a,p_biased,p_unbiased\n')
+  vf.write('m,n,eps,p_y_A,p_a,p_biased,p_unbiased\n')
 
   # Keep record of data
   with open(output_filename, 'w') as f:
