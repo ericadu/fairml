@@ -34,7 +34,7 @@ def run(settings):
   output_filename = "{}/output/{}_output.csv".format(directory, exp)
   validation_filename = "{}/validation/{}.csv".format(directory, exp)
   vf = open(validation_filename, "a")
-  vf.write('m,n,eps,p_y_A,p_a,p_biased,p_unbiased\n')
+  vf.write('m,n,eps,p_y_A,p_a,p_biased,p_unbiased,x_corr,a_corr\n')
 
   # Keep record of data
   with open(output_filename, 'w') as f:
@@ -45,6 +45,7 @@ def run(settings):
       # Generate Dataset
       df = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
       validated = spg.validate_dataset(df)
+      check_settings([m, n, eps, p_y_A, p_a, p, biased], validated)
       vf.write(','.join([str(round(i, 4)) for i in validated]) + '\n')
 
       output = df.O.values
@@ -59,16 +60,17 @@ def run(settings):
 
       f.write(','.join([str(get_repr(importancies[i])) for i in column_names]) + '\n')
 
-  # Log in overall experiment
-  exp_name, exp_trial = exp.split("-")
   results = pd.read_csv(output_filename)
+  exp_name, exp_trial = exp.split("-")
   results_filename = "{}/results/{}_results.csv".format(directory, exp_name)
+  log_results(results, results_filename, settings)
 
+def log_results(results, results_filename, settings):
+  # Log in overall experiment
   results = results.abs()
   results['max'] = results.idxmax(axis=1)
 
   param = settings['parameter']
-
   results_columns = [param, 'FP']
   fp_count = results[results['max'] == 'A'].count()['A']
 
@@ -81,6 +83,30 @@ def run(settings):
     results_file.write(','.join(results_columns) + '\n')
 
   results_file.write(','.join([settings[param], str(fp_count)]) + '\n')
+
+def check_settings(expected, actual):
+  p_biased, p_unbiased = actual[5:7]
+
+  biased = expected[-1]
+  p = p_biased if biased == True else p_unbiased
+  x_corr, a_corr = actual[7:]
+
+  expected_values = [round(i, 1) for i in expected[:6]]
+  actual_values = [round(i, 1) for i in list(actual[:5]) + [p]]
+
+  if expected_values != actual_values:
+    print("Expected values: {}".format(expected_values))
+    print("Actual values: {}".format(actual_values))
+
+  if biased:
+    if round(x_corr, 1) == 0:
+      print("Correlation equal to 0 in biased case for {}.".format(expected_values))
+
+  if not biased:
+    if round(x_corr, 1) != 0:
+      print("Correlation not equal to 0 in unbiased case for {}.".format(expected_values))
+
+  #m, n, eps, p_y_A, p_a, p_biased, p_unbiased, x_corr, a_corr
 
 if __name__ == '__main__':
   args = parser.parse_args()
