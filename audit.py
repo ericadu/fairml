@@ -63,10 +63,14 @@ def run(settings):
   results = pd.read_csv(output_filename)
   exp_name, exp_trial = exp.split("-")
   results_filename = "{}/results/{}_results.csv".format(directory, exp_name)
+  validation_results_filename = "{}/results/validation.csv".format(directory, exp_name)
 
   # Log in overall experiment
   checked_true = results.checked.value_counts()[True]
-  print("{},{}".format(exp, str(checked_true)))
+
+  vrf = open(validation_results_filename, "a")
+  vrf.write("{},{}\n".format(exp, str(checked_true / float(num_trials))))
+
   results = results.drop("checked", 1)
   results = results.abs()
   results['max'] = results.idxmax(axis=1)
