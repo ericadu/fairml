@@ -66,7 +66,10 @@ def run(settings):
   validation_results_filename = "{}/results/validation.csv".format(directory, exp_name)
 
   # Log in overall experiment
-  checked_true = results.checked.value_counts()[True]
+  if True in results.checked.values:
+    checked_true = results.checked.value_counts()[True]
+  else:
+    checked_true = 0
 
   vrf = open(validation_results_filename, "a")
   vrf.write("{},{}\n".format(exp, str(checked_true / float(num_trials))))
@@ -102,7 +105,7 @@ def check_settings(expected, actual):
   if expected_values != actual_values:
     return False
 
-  if (biased and round(x_corr, 1) == 0) or (not biased and round(x_corr, 1) != 0):
+  if (biased and p_biased != 0.5 and round(x_corr, 1) == 0) or (not biased and round(x_corr, 1) != 0):
       return False
 
   return True
