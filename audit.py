@@ -4,7 +4,7 @@ import numpy as np
 import os.path
 import pandas as pd
 import statistical_parity_generator as spg
-import counterfactual_generator as cg
+import counterfactual_statistical_parity_generator as csg
 
 from fairml import audit_model
 from fairml import plot_dependencies
@@ -17,6 +17,7 @@ parser.add_argument('--directory', '-d', type=str, default='data/generator/stati
 parser.add_argument('--settings', '-s', type=str, default='settings.csv', help='file path for experiment settings')
 parser.add_argument('--runs', '-r', type=int, default=100, help='number of trials')
 parser.add_argument('--threads', '-t', type=int, default=10, help='number of threads')
+parser.add_argument('--property', '-p', type=str, help='[sp,cf,cfsp] -- statistical_parity, counterfactual')
 
 def get_repr(value):
   return np.median(np.array(value))
@@ -37,7 +38,7 @@ def run(settings):
   validation_filename = "{}/validation/{}.csv".format(directory, exp)
   vf = open(validation_filename, "a")
   # vf.write('m,n,eps,p_y_A,p_a,p_biased,p_unbiased,x_corr,a_corr\n')
-  vf.write('m,n,delta,eps')
+  vf.write('m,n,delta,eps,p\n')
 
   # Keep record of data
   with open(output_filename, 'w') as f:
@@ -49,8 +50,8 @@ def run(settings):
       # Generate Dataset
       # df = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
       # validated = spg.validate_dataset(df)
-      df = cg.generate_dataset(m, n, biased, delta, p)
-      validated = cg.validate_dataset(df)
+      df = csg.generate_dataset(m, n, biased, eps, delta, p)
+      validated = csg.validate_dataset(df, biased)
       # checked = check_settings([m, n, eps, p_y_A, p_a, p, biased], validated)
       vf.write(','.join([str(round(i, 4)) for i in validated]) + '\n')
 
@@ -84,8 +85,9 @@ def run(settings):
   results = results.abs()
   results['max'] = results.idxmax(axis=1)
 
-  param = settings['parameter']
-  results_columns = [param, 'FP']
+  results_columns = ['delta', 'eps', 'FP']
+  # param = settings['parameter']
+  # results_columns = [param, 'FP']
   fp_count = results[results['max'] == 'A'].count()['A']
 
   write_header = False
@@ -96,7 +98,8 @@ def run(settings):
   if write_header:
     results_file.write(','.join(results_columns) + '\n')
 
-  results_file.write(','.join([settings[param], str(fp_count)]) + '\n')
+  results_file.write(','.join([str(delta), str(eps), str(fp_count)]) + '\n')
+  # results_file.write(','.join([settings[param], str(fp_count)]) + '\n')
 
 def check_settings(expected, actual):
   p_biased, p_unbiased = actual[5:7]
