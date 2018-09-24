@@ -4,6 +4,7 @@ import numpy as np
 import os.path
 import pandas as pd
 import statistical_parity_generator as spg
+import counterfactual_generator as cg
 
 from fairml import audit_model
 from fairml import plot_dependencies
@@ -34,18 +35,22 @@ def run(settings):
   output_filename = "{}/output/{}_output.csv".format(directory, exp)
   validation_filename = "{}/validation/{}.csv".format(directory, exp)
   vf = open(validation_filename, "a")
-  vf.write('m,n,eps,p_y_A,p_a,p_biased,p_unbiased,x_corr,a_corr\n')
+  # vf.write('m,n,eps,p_y_A,p_a,p_biased,p_unbiased,x_corr,a_corr\n')
+  vf.write('m,n,delta,eps')
 
   # Keep record of data
   with open(output_filename, 'w') as f:
     column_names = ['X{}'.format(str(i)) for i in range(m)] + ['A']
-    f.write(','.join(column_names + ['checked']) + '\n')
+    # f.write(','.join(column_names + ['checked']) + '\n')
+    f.write(','.join(column_names) + '\n')
 
     for _ in range(num_trials):
       # Generate Dataset
-      df = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
-      validated = spg.validate_dataset(df)
-      checked = check_settings([m, n, eps, p_y_A, p_a, p, biased], validated)
+      # df = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
+      # validated = spg.validate_dataset(df)
+      df = cg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
+      validated = cg.validate_dataset(df)
+      # checked = check_settings([m, n, eps, p_y_A, p_a, p, biased], validated)
       vf.write(','.join([str(round(i, 4)) for i in validated]) + '\n')
 
       output = df.O.values
@@ -58,23 +63,23 @@ def run(settings):
       #  call audit model
       importancies, _ = audit_model(clf.predict, df)
 
-      f.write(','.join([str(get_repr(importancies[i])) for i in column_names] + [str(checked)]) + '\n')
-
+      # f.write(','.join([str(get_repr(importancies[i])) for i in column_names] + [str(checked)]) + '\n')
+      f.write(','.join([str(get_repr(importancies[i])) for i in column_names]) + '\n')
   results = pd.read_csv(output_filename)
   exp_name, exp_trial = exp.split("-")
   results_filename = "{}/results/{}_results.csv".format(directory, exp_name)
-  validation_results_filename = "{}/results/validation.csv".format(directory, exp_name)
+  # validation_results_filename = "{}/results/validation.csv".format(directory, exp_name)
 
   # Log in overall experiment
-  if True in results.checked.values:
-    checked_true = results.checked.value_counts()[True]
-  else:
-    checked_true = 0
+  # if True in results.checked.values:
+  #   checked_true = results.checked.value_counts()[True]
+  # else:
+  #   checked_true = 0
 
-  vrf = open(validation_results_filename, "a")
-  vrf.write("{},{}\n".format(exp, str(checked_true / float(num_trials))))
+  # vrf = open(validation_results_filename, "a")
+  # vrf.write("{},{}\n".format(exp, str(checked_true / float(num_trials))))
 
-  results = results.drop("checked", 1)
+  # results = results.drop("checked", 1)
   results = results.abs()
   results['max'] = results.idxmax(axis=1)
 
