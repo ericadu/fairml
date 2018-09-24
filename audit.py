@@ -31,7 +31,7 @@ def run(settings):
   eps = float(settings['epsilon'])
   # p_y_A = float(settings['proby'])
   # p_a = float(settings['proba'])
-  p = float(settings['prob'])
+  p = float(settings['p'])
 
   output_filename = "{}/output/{}_output.csv".format(directory, exp)
   validation_filename = "{}/validation/{}.csv".format(directory, exp)
