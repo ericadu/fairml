@@ -4,6 +4,7 @@ import numpy as np
 import os.path
 import pandas as pd
 import statistical_parity_generator as spg
+import counterfactual_generator as cg
 import counterfactual_statistical_parity_generator as csg
 
 from fairml import audit_model
@@ -50,8 +51,9 @@ def run(settings):
       # Generate Dataset
       # df = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
       # validated = spg.validate_dataset(df)
-      df = csg.generate_dataset(m, n, biased, eps, delta, p)
-      validated = csg.validate_dataset(df, biased)
+      #df = csg.generate_dataset(m, n, biased, eps, delta, p)
+      df = cg.generate_dataset(m, n, biased, delta, p)
+      validated = cg.validate_dataset(df, biased)
       # checked = check_settings([m, n, eps, p_y_A, p_a, p, biased], validated)
       vf.write(','.join([str(round(i, 4)) for i in validated]) + '\n')
 
