@@ -27,9 +27,10 @@ def run(settings):
   m = int(settings['columns'])
   n = int(settings['samples'])
   biased = False if settings['biased'] == 'False' else True
+  delta = float(settings['delta'])
   eps = float(settings['epsilon'])
-  p_y_A = float(settings['proby'])
-  p_a = float(settings['proba'])
+  # p_y_A = float(settings['proby'])
+  # p_a = float(settings['proba'])
   p = float(settings['prob'])
 
   output_filename = "{}/output/{}_output.csv".format(directory, exp)
@@ -48,7 +49,7 @@ def run(settings):
       # Generate Dataset
       # df = spg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
       # validated = spg.validate_dataset(df)
-      df = cg.generate_dataset(exp, m, n, biased, eps, p_y_A, p_a, p)
+      df = cg.generate_dataset(m, n, biased, delta, p)
       validated = cg.validate_dataset(df)
       # checked = check_settings([m, n, eps, p_y_A, p_a, p, biased], validated)
       vf.write(','.join([str(round(i, 4)) for i in validated]) + '\n')
